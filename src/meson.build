@@ -20,3 +20,9 @@ if get_option('executable')
   droid0 = executable('droid0', droid0_sources,
     install: true)
 endif
+
+if get_option('tests')
+  droid0_test = executable('droid0.test', 'droid0.test.cpp',
+    dependencies: [gtest_dep, gtest_main_dep])
+  test('main entrypoint', droid0_test)
+endif
