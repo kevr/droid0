@@ -1,1 +1,6 @@
-option('version', type: 'string', value: '0.0.1', description: 'Program version')
+option('version', type: 'string', value: '0.0.1',
+       description: 'Program version')
+option('executable', type: 'boolean', value: true,
+       description: 'Whether to build the executable or not')
+option('tests', type: 'boolean', value: true,
+       description: 'Whether to build tests or not')

@@ -10,5 +10,11 @@ project('droid0', 'cpp',
     'cpp_std=c++14'
   ])
 
+if get_option('tests')
+  gtest_proj = subproject('gtest')
+  gtest_dep = gtest_proj.get_variable('gtest_dep')
+  gmock_dep = gtest_proj.get_variable('gmock_dep')
+endif
+
 # Traverse into project srcdir
 subdir('src')
