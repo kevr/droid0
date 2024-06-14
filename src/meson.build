@@ -16,4 +16,7 @@ droid0_sources = [
   'droid0.cpp',
 ]
 
-droid0 = executable('droid0', droid0_sources, install: true)
+if get_option('executable')
+  droid0 = executable('droid0', droid0_sources,
+    install: true)
+endif
