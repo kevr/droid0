@@ -13,16 +13,26 @@ message('- Dynamic version:', get_option('version'))
 
 # Non-test sources for the droid0 executable
 droid0_sources = [
-  'droid0.cpp',
+  'net/resolve.cpp',
 ]
+droid0_lib = static_library('droid0', droid0_sources)
+droid0_dep = declare_dependency(link_with: droid0_lib)
+droid0_deps = [droid0_dep, boost_dep]
 
 if get_option('executable')
-  droid0 = executable('droid0', droid0_sources,
+  droid0 = executable('droid0', 'droid0.cpp',
+    dependencies: droid0_deps,
     install: true)
 endif
 
 if get_option('tests')
+  test_deps = droid0_deps + [gtest_dep, gtest_main_dep]
+  mock_deps = test_deps + [gmock_dep]
+
   droid0_test = executable('droid0.test', 'droid0.test.cpp',
-    dependencies: [gtest_dep, gtest_main_dep])
+    dependencies: test_deps)
   test('main entrypoint', droid0_test)
+
+  # Traverse into net tests
+  subdir('net')
 endif
