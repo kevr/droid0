@@ -4,6 +4,13 @@
 # SPDX-License-Identifier: MIT
 #
 
+conf_data = configuration_data()
+conf_data.set('version', get_option('version'))
+configure_file(input: 'config.hpp.in',
+               output: 'config.hpp',
+               configuration: conf_data)
+message('- Dynamic version:', get_option('version'))
+
 # Non-test sources for the droid0 executable
 droid0_sources = [
   'droid0.cpp',

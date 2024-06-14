@@ -1,0 +1,7 @@
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
+
+constexpr const char *NAME = "droid0";
+constexpr const char *VERSION = "@version@";
+
+#endif /* CONFIG_HPP */
