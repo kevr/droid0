@@ -17,5 +17,8 @@ if get_option('tests')
   gmock_dep = gtest_proj.get_variable('gmock_dep')
 endif
 
+boost_dep = dependency('boost',
+  modules: ['system'])
+
 # Traverse into project srcdir
 subdir('src')
