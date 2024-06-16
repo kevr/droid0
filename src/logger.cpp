@@ -9,12 +9,14 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
 namespace droid0
 {
 
 const loglevel logger::default_level = loglevel::info;
 loglevel logger::m_level = logger::default_level;
+std::ofstream logger::m_file_stream;
 std::ostream &logger::default_stream = std::cout;
 std::ostream *logger::m_stream = &logger::default_stream;
 
@@ -25,7 +27,18 @@ void logger::set_loglevel(loglevel level)
 
 void logger::set_stream(std::ostream &stream)
 {
+    m_file_stream.close();
     m_stream = &stream;
+}
+
+void logger::set_stream(const std::string &logfile)
+{
+    m_file_stream.open(logfile.c_str(), std::ios::app);
+    if (!m_file_stream.is_open()) {
+        throw std::runtime_error("unable to open " + logfile + " for writing");
+    }
+
+    m_stream = &m_file_stream;
 }
 
 void logger::error(const std::string &message)

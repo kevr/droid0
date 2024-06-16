@@ -28,7 +28,10 @@ if get_option('executable')
 endif
 
 if get_option('tests')
-  test_deps = droid0_deps + [gtest_dep, gtest_main_dep]
+  # Traverse into testing to build our testlib
+  subdir('testutil')
+
+  test_deps = droid0_deps + [droid0_testdep, gtest_dep, gtest_main_dep]
   mock_deps = test_deps + [gmock_dep]
 
   droid0_test = executable('droid0.test', 'droid0.test.cpp',
