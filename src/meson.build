@@ -13,6 +13,8 @@ message('- Dynamic version:', get_option('version'))
 
 # Non-test sources for the droid0 executable
 droid0_sources = [
+  'logger.cpp',
+  'string.cpp',
   'net/resolve.cpp',
 ]
 droid0_lib = static_library('droid0', droid0_sources)
@@ -32,6 +34,10 @@ if get_option('tests')
   droid0_test = executable('droid0.test', 'droid0.test.cpp',
     dependencies: test_deps)
   test('main entrypoint', droid0_test)
+
+  logger_test = executable('logger.test', 'logger.test.cpp',
+    dependencies: test_deps)
+  test('logger', logger_test)
 
   # Traverse into net tests
   subdir('net')
