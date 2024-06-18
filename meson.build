@@ -18,7 +18,7 @@ if get_option('tests')
 endif
 
 boost_dep = dependency('boost',
-  modules: ['system'])
+  modules: ['system', 'program_options'])
 
 # Traverse into project srcdir
 subdir('src')

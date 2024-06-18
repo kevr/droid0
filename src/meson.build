@@ -15,6 +15,7 @@ message('- Dynamic version:', get_option('version'))
 droid0_sources = [
   'logger.cpp',
   'string.cpp',
+  'conf/config.cpp',
   'net/resolve.cpp',
 ]
 droid0_lib = static_library('droid0', droid0_sources)
