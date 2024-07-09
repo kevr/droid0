@@ -26,16 +26,14 @@ std::string mkdtemp()
 
 void rmtree(const std::string &path)
 {
-    DIR *dp;
-    struct dirent *ep;
-
-    dp = opendir(path.c_str());
-    if (!dp) {
+    DIR *dp = nullptr;
+    if (dp = opendir(path.c_str()); dp == nullptr) {
         // unable to open directory!
-        return;
+        throw std::logic_error("unable to open " + path + ": " +
+                               strerror(errno));
     }
 
-    while ((ep = readdir(dp)) != nullptr) {
+    for (struct dirent *ep = readdir(dp); ep != nullptr; ep = readdir(dp)) {
         std::string full_path = path + "/" + ep->d_name;
         if (strcmp(ep->d_name, ".") == 0) {
             logging.debug("Skipping this dir...");
@@ -46,11 +44,7 @@ void rmtree(const std::string &path)
         }
 
         struct stat file;
-        if (stat(full_path.c_str(), &file) == -1) {
-            // stat error
-            continue;
-        }
-
+        stat(full_path.c_str(), &file);
         if (S_ISDIR(file.st_mode)) {
             logging.debug("Deleting directory: " + full_path);
             rmtree(full_path.c_str());
