@@ -89,4 +89,17 @@ void logger::print(loglevel level, const std::string &message)
 
 logger logging = logger();
 
+trace_instance::trace_instance(const std::string &func)
+    : m_func(func)
+{
+    m_func.reserve(m_func.size() + 1);
+    logging.trace(m_func, "");
+}
+
+trace_instance::~trace_instance()
+{
+    m_func.insert(m_func.begin(), '~');
+    logging.trace(m_func, "");
+}
+
 }; // namespace droid0

@@ -54,8 +54,20 @@ class logger
 
 extern logger logging;
 
+class trace_instance
+{
+  private:
+    std::string m_func;
+
+  public:
+    trace_instance(const std::string &func);
+    ~trace_instance();
+};
+
 }; // namespace droid0
 
 using droid0::logging;
+
+#define SCOPE_TRACE() droid0::trace_instance __trace(__PRETTY_FUNCTION__);
 
 #endif /* LOGGER_HPP */
