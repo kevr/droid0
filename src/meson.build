@@ -43,6 +43,10 @@ if get_option('tests')
     dependencies: test_deps)
   test('logger', logger_test)
 
+  string_test = executable('string.test', 'string.test.cpp',
+    dependencies: test_deps)
+  test('string', string_test)
+
   # Traverse into net tests
   subdir('net')
 endif

@@ -4,21 +4,27 @@
  * SPDX-License-Identifier: MIT
  **/
 #include "string.hpp"
-#include <set>
-
-using namespace droid0;
-
-static const std::set<char> whitespace({' ', '\n', '\t'});
 
 namespace droid0
 {
 
+const std::set<char> whitespace{' ', '\r', '\n', '\t'};
+
+std::string lstrip(std::string original)
+{
+    strip_([&]() { return original.front(); }, [&]() { original.erase(0, 1); });
+    return original;
+}
+
 std::string rstrip(std::string original)
 {
-    while (whitespace.find(original.back()) != whitespace.end()) {
-        original.pop_back();
-    }
+    strip_([&]() { return original.back(); }, [&]() { original.pop_back(); });
     return original;
+}
+
+std::string strip(std::string original)
+{
+    return lstrip(rstrip(std::move(original)));
 }
 
 }; // namespace droid0
