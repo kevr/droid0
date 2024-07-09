@@ -10,7 +10,7 @@
 
 namespace droid0
 {
-namespace net
+namespace tcp
 {
 
 /**
@@ -19,7 +19,7 @@ namespace net
 boost::asio::ip::tcp::resolver::iterator
 resolve(boost::asio::io_service &io, const char *host, const char *port);
 
-}; // namespace net
+}; // namespace tcp
 }; // namespace droid0
 
 #endif /* NET_RESOLVE_HPP */

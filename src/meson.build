@@ -16,7 +16,9 @@ droid0_sources = [
   'logger.cpp',
   'string.cpp',
   'conf/config.cpp',
-  'net/resolve.cpp',
+  'tcp/client.cpp',
+  'tcp/resolve.cpp',
+  'tcp/errors.cpp',
 ]
 droid0_lib = static_library('droid0', droid0_sources)
 droid0_dep = declare_dependency(link_with: droid0_lib)
@@ -44,6 +46,6 @@ if get_option('tests')
     dependencies: test_deps)
   test('string', string_test)
 
-  # Traverse into net tests
-  subdir('net')
+  # Traverse into tcp tests
+  subdir('tcp')
 endif

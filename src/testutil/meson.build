@@ -8,8 +8,8 @@ if get_option('tests')
 
   testlib_sources = [
     'tmpdir.cpp',
-    '../net/server.cpp',
-    '../net/connection.cpp',
+    '../tcp/server.cpp',
+    '../tcp/connection.cpp',
   ]
   droid0_testlib = static_library('droid0_test', testlib_sources)
   droid0_testdep = declare_dependency(link_with: droid0_testlib)
