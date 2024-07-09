@@ -22,12 +22,6 @@ class config
     //! Default constructor
     config();
 
-    //! Copy constructor
-    config(const config &o);
-
-    //! Copy assignment
-    config &operator=(const config &o);
-
   public:
     //! Parse command-line arguments
     config &parse(int argc, const char *argv[]);
