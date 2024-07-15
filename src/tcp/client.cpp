@@ -19,6 +19,11 @@ namespace droid0
 namespace tcp
 {
 
+// Helper for log messages
+std::string labeled(const std::string &prefix,
+                    const std::optional<std::string> &name,
+                    const std::string &message);
+
 //! Throws std::logic_error; put in place to avoid a dead function call
 const client::read_func_t client::default_readline =
     [](client &, const boost::system::error_code &, const std::string &) {
@@ -26,14 +31,14 @@ const client::read_func_t client::default_readline =
     };
 
 const client::connect_func_t client::default_connect =
-    [](client &, const boost::system::error_code &error,
+    [](client &c, const boost::system::error_code &error,
        boost::asio::ip::tcp::resolver::iterator endpoint_iter) {
         if (!error) {
             std::stringstream ss;
-            ss << "[Client] connected to " << endpoint_iter->endpoint();
-            logging.debug(ss.str());
+            ss << "connected to " << endpoint_iter->endpoint();
+            logging.debug(labeled("Client", c.name(), ss.str()));
         } else {
-            logging.error("[Client] unable to connect");
+            logging.error(labeled("Client", c.name(), "unable to connect"));
         }
     };
 
@@ -90,6 +95,17 @@ void client::stop()
     }
 }
 
+client &client::set_name(const std::string &name)
+{
+    m_name = name;
+    return *this;
+}
+
+const std::optional<std::string> &client::name() const
+{
+    return m_name;
+}
+
 void client::start_connect(
     boost::asio::ip::tcp::resolver::iterator endpoint_iter)
 {
@@ -98,7 +114,7 @@ void client::start_connect(
     if (endpoint_iter != boost::asio::ip::tcp::resolver::iterator()) {
         std::stringstream ss;
         ss << "connecting to " << endpoint_iter->endpoint() << "...";
-        logging.info(ss.str());
+        logging.info(labeled("Client", name(), ss.str()));
 
         // Begin the async connection chain
         m_socket.async_connect(
@@ -121,14 +137,14 @@ void client::handle_connect(
         m_on_connect(*this, ec, endpoint_iter);
     } else if (ec) {
         // Socket encountered an error
-        logging.error("encountered '" + ec.message() + "'");
+        logging.error(labeled("Client", name(), ec.message()));
         m_socket.close();
         start_connect(++endpoint_iter);
     } else {
         // Socket connected
         std::stringstream ss;
         ss << "connected to " << endpoint_iter->endpoint();
-        logging.info(ss.str());
+        logging.info(labeled("Client", name(), ss.str()));
         start_readline();
         m_on_connect(*this, ec, endpoint_iter);
     }
@@ -157,16 +173,15 @@ void client::handle_readline(const boost::system::error_code &ec)
     std::istream is(&m_input_buffer);
     std::getline(is, line);
     if (!line.empty()) {
-        logging.info("[Client:R] " + line);
+        logging.info(labeled("Client:R", name(), line));
         m_on_readline(*this, ec, std::move(line));
     }
 
     if (ec) {
         if (graceful_read_errors.find(ec) != graceful_read_errors.end()) {
-            logging.debug("[Client:R] encountered graceful error '" +
-                          ec.message() + "'");
+            logging.debug(labeled("Client:R", name(), ec.message()));
         } else {
-            logging.error("[Client:R] " + ec.message());
+            logging.error(labeled("Client:R", name(), ec.message()));
         }
 
         return stop();
@@ -181,15 +196,27 @@ void client::handle_write(const boost::system::error_code &ec,
     // Otherwise, an error occurred, log it out and stop the socket
     if (ec) {
         if (graceful_write_errors.find(ec) != graceful_write_errors.end()) {
-            logging.debug("[Client:L] encountered graceful error '" +
-                          ec.message() + "'");
+            logging.debug(labeled("Client:L", name(), ec.message()));
         } else {
-            logging.error("[Client:L] " + ec.message());
+            logging.error(labeled("Client:L", name(), ec.message()));
         }
         stop();
     } else {
-        logging.info("[Client:L] " + rstrip(message));
+        logging.info(labeled("Client:L", name(), rstrip(message)));
     }
+}
+
+std::string labeled(const std::string &prefix,
+                    const std::optional<std::string> &name,
+                    const std::string &message)
+{
+    std::stringstream ss;
+    ss << '[' << prefix << "] ";
+    if (name.has_value()) {
+        ss << '(' << name.value() << ')' << ' ';
+    }
+    ss << message;
+    return ss.str();
 }
 
 }; // namespace tcp

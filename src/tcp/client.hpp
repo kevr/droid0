@@ -8,6 +8,8 @@
 
 #include "handlers.hpp"
 #include <boost/asio.hpp>
+#include <optional>
+#include <string>
 
 namespace droid0
 {
@@ -38,6 +40,8 @@ class client
     static const close_func_t default_close;
     close_func_t m_on_close = default_close;
 
+    std::optional<std::string> m_name;
+
   public:
     //! Construct with an io_service, but don't start the client yet
     client(boost::asio::io_service &io);
@@ -59,6 +63,11 @@ class client
 
     //! Stop the client
     void stop();
+
+    //! Set internal client name (used for logging)
+    client &set_name(const std::string &name);
+
+    const std::optional<std::string> &name() const;
 
   private:
     //! Check and react to an expired deadline

@@ -86,6 +86,7 @@ TEST_F(client_test, server_ping_client_pong)
             EXPECT_NO_THROW(client.write("test"));
             m_server.stop();
         })
+        .set_name("test")
         .start(results);
 
     m_io.run();
