@@ -46,6 +46,8 @@ class config
     void config_help(std::ostream &os) const;
 };
 
+void write_default_config(const std::string &path);
+
 }; // namespace conf
 }; // namespace droid0
 
