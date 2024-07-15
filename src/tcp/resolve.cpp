@@ -10,8 +10,9 @@ namespace droid0
 namespace tcp
 {
 
-boost::asio::ip::tcp::resolver::iterator
-resolve(boost::asio::io_service &io, const char *host, const char *port)
+boost::asio::ip::tcp::resolver::iterator resolve(boost::asio::io_service &io,
+                                                 const std::string &host,
+                                                 const std::string &port)
 {
     boost::asio::ip::tcp::resolver resolver(io);
     boost::asio::ip::tcp::resolver::query q(host, port);

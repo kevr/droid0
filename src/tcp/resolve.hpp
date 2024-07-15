@@ -16,8 +16,9 @@ namespace tcp
 /**
  * Resolve a (host, port) pair into an endpoint iterator
  **/
-boost::asio::ip::tcp::resolver::iterator
-resolve(boost::asio::io_service &io, const char *host, const char *port);
+boost::asio::ip::tcp::resolver::iterator resolve(boost::asio::io_service &io,
+                                                 const std::string &host,
+                                                 const std::string &port);
 
 }; // namespace tcp
 }; // namespace droid0
