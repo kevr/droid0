@@ -19,6 +19,7 @@ droid0_sources = [
   'conf/config.cpp',
   'filesystem/listdir.cpp',
   'filesystem/stat.cpp',
+  'irc/message.cpp',
   'tcp/client.cpp',
   'tcp/resolve.cpp',
   'tcp/errors.cpp',
@@ -49,6 +50,7 @@ if get_option('tests')
     dependencies: test_deps)
   test('string', string_test)
 
-  # Traverse into tcp tests
+  # Delve into deeper tests
   subdir('tcp')
+  subdir('irc')
 endif
