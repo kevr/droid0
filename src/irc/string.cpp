@@ -22,7 +22,7 @@ std::string registration(const std::string &nick, const std::string &user,
 std::string pong(const std::string &arg)
 {
     std::stringstream ss;
-    ss << "PONG " << arg << '\n';
+    ss << "PONG :" << arg << '\n';
     return ss.str();
 }
 
