@@ -173,7 +173,7 @@ void client::handle_readline(const boost::system::error_code &ec)
     std::istream is(&m_input_buffer);
     std::getline(is, line);
     if (!line.empty()) {
-        logging.info(labeled("Client:R", name(), line));
+        logging.debug(labeled("Client:R", name(), line));
         m_on_readline(*this, ec, std::move(line));
     }
 
@@ -202,7 +202,7 @@ void client::handle_write(const boost::system::error_code &ec,
         }
         stop();
     } else {
-        logging.info(labeled("Client:L", name(), rstrip(message)));
+        logging.debug(labeled("Client:L", name(), rstrip(message)));
     }
 }
 
