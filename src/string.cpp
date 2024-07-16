@@ -18,6 +18,9 @@ std::string lstrip(std::string original)
         },
         [&]() {
             original.erase(0, 1);
+        },
+        [&]() {
+            return !original.empty();
         });
     return original;
 }
@@ -30,6 +33,9 @@ std::string rstrip(std::string original)
         },
         [&]() {
             original.pop_back();
+        },
+        [&]() {
+            return !original.empty();
         });
     return original;
 }
@@ -48,7 +54,10 @@ std::vector<std::string> split(const std::string &orig, const char delim)
         v.emplace_back(orig.substr(old, pos - old));
         old = pos + 1;
     }
-    v.emplace_back(orig.substr(old, orig.size() - old));
+    auto last = orig.substr(old, orig.size() - old);
+    if (!last.empty()) {
+        v.emplace_back(std::move(last));
+    }
 
     return v;
 } // LCOV_EXCL_LINE

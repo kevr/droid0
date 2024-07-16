@@ -16,10 +16,10 @@ namespace droid0
 
 extern const std::set<char> whitespace;
 
-template <typename ValueFunc, typename PopFunc>
-void strip_(ValueFunc v, PopFunc p)
+template <typename ValueFunc, typename PopFunc, typename Predicate>
+void strip_(ValueFunc v, PopFunc p, Predicate pred)
 {
-    while (whitespace.find(v()) != whitespace.end())
+    while (pred() && whitespace.find(v()) != whitespace.end())
         p();
 }
 
@@ -30,7 +30,7 @@ std::string strip(std::string original);
 std::vector<std::string> split(const std::string &orig, const char delim = ' ');
 
 template <typename T>
-std::string join(const std::vector<T> &orig, const char delim = ',')
+std::string join(const std::vector<T> &orig, const std::string &delim = ",")
 {
     if (!orig.size()) {
         return std::string();
