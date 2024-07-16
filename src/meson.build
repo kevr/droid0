@@ -19,6 +19,7 @@ droid0_sources = [
   'conf/config.cpp',
   'filesystem/listdir.cpp',
   'filesystem/stat.cpp',
+  'irc/config.cpp',
   'irc/message.cpp',
   'tcp/client.cpp',
   'tcp/resolve.cpp',
