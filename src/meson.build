@@ -54,6 +54,7 @@ if get_option('tests')
   test('string', string_test)
 
   # Delve into deeper tests
+  subdir('filesystem')
   subdir('tcp')
   subdir('irc')
 endif
