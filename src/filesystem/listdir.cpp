@@ -1,5 +1,4 @@
 #include "listdir.hpp"
-#include "../logger.hpp"
 #include <cstring>
 #include <dirent.h>
 #include <stdexcept>
@@ -21,11 +20,7 @@ std::vector<std::string> listdir(const std::string &path)
     }
 
     for (struct dirent *ep = readdir(dp); ep != nullptr; ep = readdir(dp)) {
-        if (strcmp(ep->d_name, ".") == 0) {
-            logging.debug("Skipping this dir...");
-            continue;
-        } else if (strcmp(ep->d_name, "..") == 0) {
-            logging.debug("Skipping parent dir...");
+        if (strcmp(ep->d_name, ".") == 0 || strcmp(ep->d_name, "..") == 0) {
             continue;
         }
 
