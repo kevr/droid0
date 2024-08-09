@@ -192,8 +192,10 @@ void client::handle_privmsg(client &client, irc::message &message, void *data)
 
 void client::perform(client &, irc::message &, void *)
 {
-    // Autojoin channels
-    join(droid0::join(m_channels, ","));
+    // Autojoin channels defined in irc::config if they exist
+    if (!m_channels.empty()) {
+        join(droid0::join(m_channels, ","));
+    }
 }
 
 }; // namespace droid0::irc
