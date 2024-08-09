@@ -17,6 +17,7 @@ droid0_sources = [
   'logger.cpp',
   'string.cpp',
   'conf/config.cpp',
+  'filesystem/dirname.cpp',
   'filesystem/listdir.cpp',
   'filesystem/stat.cpp',
   'irc/client.cpp',
