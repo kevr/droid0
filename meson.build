@@ -19,6 +19,7 @@ endif
 
 boost_dep = dependency('boost',
   modules: ['system', 'program_options'])
+fmt_dep = dependency('fmt')
 
 # Traverse into project srcdir
 subdir('src')
