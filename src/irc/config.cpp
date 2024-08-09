@@ -1,4 +1,5 @@
 #include "config.hpp"
+#include "../string.hpp"
 #include <fstream>
 
 namespace po = boost::program_options;
@@ -21,7 +22,11 @@ config::config(const std::string &config_file)
     m_desc.add_options()("realname", po::value<std::string>()->required(),
                          "real name");
     m_desc.add_options()("channels", po::value<std::string>(),
-                         "channels prefixed with # and separated by commas");
+                         "channels (# excluded) separated by commas");
+    m_desc.add_options()("prefix", po::value<std::string>()->default_value("!"),
+                         "command prefix (single character)");
+    m_desc.add_options()("plugins", po::value<std::string>(),
+                         "plugin names separated by commas");
 
     std::ifstream file(config_file.c_str());
     po::store(po::parse_config_file(file, m_desc), *m_vm);
@@ -45,34 +50,44 @@ bool config::is_set(const std::string &key)
     return m_vm->count(key) > 0;
 }
 
-std::string config::server_address() const
+const std::string &config::server_address() const
 {
     return value<std::string>("server_address");
 }
 
-std::string config::server_port() const
+const std::string &config::server_port() const
 {
     return value<std::string>("server_port");
 }
 
-std::string config::nick() const
+const std::string &config::nick() const
 {
     return value<std::string>("nick");
 }
 
-std::string config::user() const
+const std::string &config::user() const
 {
     return value<std::string>("user");
 }
 
-std::string config::realname() const
+const std::string &config::realname() const
 {
     return value<std::string>("realname");
 }
 
-std::string config::channels() const
+const std::string &config::channels() const
 {
     return value<std::string>("channels");
+}
+
+const std::string &config::prefix() const
+{
+    return value<std::string>("prefix");
+}
+
+std::vector<std::string> config::plugins() const
+{
+    return split(value<std::string>("plugins"), ',');
 }
 
 }; // namespace droid0::irc

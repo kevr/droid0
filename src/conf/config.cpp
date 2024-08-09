@@ -30,6 +30,7 @@ config::config()
 
     const std::string default_network_confdir =
         xdg_config_home() + "/network.d";
+    const std::string default_plugin_directory = xdg_data_home() + "/plugins";
     m_config_options.add_options()(
         "verbosity,v",
         po::value<int>()->default_value(loglevel::info)->multitoken(),
@@ -37,7 +38,10 @@ config::config()
                                 "log to a particular file")(
         "network_confdir",
         po::value<std::string>()->default_value(default_network_confdir),
-        "configuration directory for networks");
+        "configuration directory for networks")(
+        "plugin_directory",
+        po::value<std::string>()->default_value(default_plugin_directory),
+        "directory containing plugins");
 }
 
 config &config::parse(int argc, const char *argv[])
@@ -79,6 +83,11 @@ void write_default_config(const std::string &path)
 ## Path to directory housing droid0 network configurations
 ## Default: $XDG_CONFIG_HOME/droid0/network.d
 #network_confdir = /path/to/custom/network.d
+
+## Path to directory housing droid0 plugins in the form of
+## <name>.so shared libraries
+## Default: $XDG_DATA_HOME/droid0/plugins
+#plugin_directory = /path/to/custom/plugins
 
 )";
 

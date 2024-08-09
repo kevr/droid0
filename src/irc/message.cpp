@@ -6,16 +6,18 @@ namespace droid0::irc
 {
 
 message::message(std::string line)
-    : m_raw(std::move(line))
+    : std::string(std::move(line))
 {
     std::string arg;
-    std::tie(line, arg) = message_split(m_raw);
+    std::tie(line, arg) = message_split(*this);
     if (!arg.empty()) {
         m_arg = arg;
     }
 
     m_elements = split(strip(line));
+
     m_source = first();
+    m_source.parse();
 }
 
 const std::vector<std::string> &message::elements() const
@@ -28,7 +30,7 @@ const std::string &message::first() const
     return m_elements.at(0);
 }
 
-const std::string &message::source() const
+const irc::source &message::src() const
 {
     return m_source;
 }
@@ -38,14 +40,31 @@ const std::optional<std::string> &message::arg() const
     return m_arg;
 }
 
-bool message::is_numeric() const
+void message::parse_command(const std::string &prefix)
 {
-    return m_numeric != 0;
+    auto privmsg = strip(arg().value());
+    if (privmsg.find(prefix) != 0)
+        return;
+
+    std::size_t o = prefix.size();
+    if (auto i = privmsg.find(' ', o); i != std::string::npos) {
+        // "![command] [command_arg]"
+        m_command = privmsg.substr(o, i - o);
+        m_command_arg = privmsg.substr(i + 1);
+    } else {
+        // "![command]"
+        m_command = strip(privmsg).substr(o, privmsg.size() - o);
+    }
 }
 
-int message::numeric() const
+const std::string &message::command() const
 {
-    return m_numeric;
+    return m_command;
+}
+
+const std::string &message::command_arg() const
+{
+    return m_command_arg;
 }
 
 std::tuple<std::string, std::string>

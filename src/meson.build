@@ -21,9 +21,13 @@ droid0_sources = [
   'filesystem/listdir.cpp',
   'filesystem/mkdir.cpp',
   'filesystem/stat.cpp',
+  'plugin/collection.cpp',
+  'plugin/manager.cpp',
   'irc/client.cpp',
   'irc/config.cpp',
   'irc/message.cpp',
+  'irc/opcode.cpp',
+  'irc/source.cpp',
   'irc/string.cpp',
   'tcp/client.cpp',
   'tcp/resolve.cpp',
@@ -31,7 +35,7 @@ droid0_sources = [
 ]
 droid0_lib = static_library('droid0', droid0_sources)
 droid0_dep = declare_dependency(link_with: droid0_lib)
-droid0_deps = [droid0_dep, boost_dep]
+droid0_deps = [droid0_dep, boost_dep, fmt_dep]
 
 if get_option('executable')
   droid0 = executable('droid0', 'droid0.cpp',
@@ -60,3 +64,5 @@ if get_option('tests')
   subdir('tcp')
   subdir('irc')
 endif
+
+subdir('plugins')

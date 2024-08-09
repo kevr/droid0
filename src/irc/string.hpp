@@ -17,6 +17,7 @@ std::string registration(const std::string &nick, const std::string &user,
 
 std::string pong(const std::string &arg);
 std::string join(const std::string &channel);
+std::string privmsg(const std::string &dest, const std::string &text);
 
 }; // namespace droid0::irc::string
 

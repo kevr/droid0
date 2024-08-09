@@ -2,6 +2,7 @@
 #ifndef IRC_MESSAGE_HPP
 #define IRC_MESSAGE_HPP
 
+#include "source.hpp"
 #include <optional>
 #include <string>
 #include <tuple>
@@ -10,15 +11,14 @@
 namespace droid0::irc
 {
 
-class message
+class message : public std::string
 {
   private:
-    std::string m_raw;
     std::vector<std::string> m_elements;
-    std::string m_source;
+    source m_source;
     std::optional<std::string> m_arg;
-
-    int m_numeric = 0;
+    std::string m_command;
+    std::string m_command_arg;
 
   public:
     message(std::string line);
@@ -31,15 +31,19 @@ class message
     const std::string &first() const;
 
     //! Source element (:source or COMMAND)
-    const std::string &source() const;
+    const irc::source &src() const;
 
+    //! Return the data's argument if it exists
     const std::optional<std::string> &arg() const;
 
-    //! Return if this message is numeric
-    bool is_numeric() const;
+    //! Parse message for command() and command_arg() pieces
+    void parse_command(const std::string &prefix);
 
-    //! Return numeric -- !is_numeric() => 0
-    int numeric() const;
+    //! Return command; empty string if no command
+    const std::string &command() const;
+
+    //! Return command_arg; empty string if no command_arg
+    const std::string &command_arg() const;
 
   private:
     std::tuple<std::string, std::string> message_split(const std::string &line);

@@ -22,17 +22,19 @@ class config
     bool is_set(const std::string &key);
 
     template <typename T>
-    T value(const std::string &key) const
+    const T &value(const std::string &key) const
     {
         return m_vm->at(key).as<T>();
     }
 
-    std::string server_address() const;
-    std::string server_port() const;
-    std::string nick() const;
-    std::string user() const;
-    std::string realname() const;
-    std::string channels() const;
+    const std::string &server_address() const;
+    const std::string &server_port() const;
+    const std::string &nick() const;
+    const std::string &user() const;
+    const std::string &realname() const;
+    const std::string &channels() const;
+    const std::string &prefix() const;
+    std::vector<std::string> plugins() const;
 };
 
 }; // namespace droid0::irc

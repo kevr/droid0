@@ -18,5 +18,5 @@ TEST(message, works)
     irc::message message(":source cmd param1 param2 :argument text");
     EXPECT_EQ(message.arg().value(), "argument text");
     EXPECT_EQ(message.first(), ":source");
-    EXPECT_EQ(message.source(), ":source");
+    EXPECT_EQ(message.src(), ":source");
 }
