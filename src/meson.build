@@ -13,6 +13,7 @@ message('- Dynamic version:', get_option('version'))
 
 # Non-test sources for the droid0 executable
 droid0_sources = [
+  'application.cpp',
   'environment.cpp',
   'logger.cpp',
   'string.cpp',
