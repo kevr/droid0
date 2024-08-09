@@ -11,4 +11,10 @@ std::string xdg_config_home()
     return home + "/.config/" + NAME;
 }
 
+std::string xdg_data_home()
+{
+    std::string home(getenv("HOME"));
+    return home + "/.local/share/" + NAME;
+}
+
 }; // namespace droid0
