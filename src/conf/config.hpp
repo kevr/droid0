@@ -44,6 +44,8 @@ class config
 
     //! Print configuration help to os
     void config_help(std::ostream &os) const;
+
+    const std::string &path() const;
 };
 
 void write_default_config(const std::string &path);

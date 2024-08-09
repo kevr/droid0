@@ -90,5 +90,10 @@ void write_default_config(const std::string &path)
     }
 }
 
+const std::string &config::path() const
+{
+    return value<std::string>("config");
+}
+
 }; // namespace conf
 }; // namespace droid0
